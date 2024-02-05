@@ -1,0 +1,280 @@
+
+<head>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    .green-text {
+      color: green;
+    }
+
+    .red-text {
+      color: red;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .nutrition-info {
+      text-align: left;
+      margin-right: 20px;
+    }
+
+    .performance-facts {
+      border: 1px solid black;
+      width: 280px;
+      padding: 0.5rem;
+      margin-right: 20px;
+    }
+
+    .performance-facts__title {
+      font-weight: bold;
+      font-size: 2rem;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .performance-facts__header {
+      border-bottom: 10px solid black;
+      padding: 0 0 0.25rem 0;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .performance-facts__header p {
+      margin: 0;
+    }
+
+    .performance-facts__table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .form-container {
+      flex-grow: 1;
+      width: 300px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button, a, .clear {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    a {
+    background-color: #ffffff
+    color: #ffffff
+    }
+
+    .clear {
+  background-color: #ff4500; /* Red-Orange Color */
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+    .yellow {
+      background-color: yellow;
+    }
+
+    button:hover, a:hover, .clear:hover, .yellow:hover {
+      background-color: #45a049;
+    }
+    
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nutrition-info">
+      <h3>Total Calories</h3>
+      <p class="<%= FoodNutritionInfo.total_calories.round <= 2000 ? 'green-text' : 'red-text' %>">
+        <%= FoodNutritionInfo.total_calories.round %> Calories
+      </p>
+    </div>
+
+    <section class="performance-facts">
+      <header class="performance-facts__header">
+        <h1 class="performance-facts__title">Nutrition Facts</h1>
+        <p>Serving Size 1</p>
+        <p><%= @food.capitalize %></p>
+      </header>
+      <table class="performance-facts__table">
+        <thead>
+      <tr>
+        <th colspan="3" class="small-info">
+          Amount Per Serving
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <td><b>Calories:</b></td>
+      <td> <b><%= @calories_quantity %></b> </td>
+    </tr>
+    <tr class="thick-row">
+      <td colspan="3" class="small-info">
+        <b>% Daily Value*</b>
+      </td>
+    </tr>
+    
+    <% if @total_fat_quantity.to_i >= 1 %>
+      <tr>
+        <th colspan="2">
+          <b>Total Fat</b>
+          <%= @total_fat_quantity %>g
+        </th>
+        <td>
+          <b><%= @total_fat_total_daily %>% </b>
+        </td>
+      </tr>
+    <% end %>
+    
+    <tr>
+      <td><b>Fat:</b></td>
+      <td>
+        <% if @total_fat_quantity.to_i >= 1 %>
+          <b>Total:</b> <%= @total_fat_quantity %>g<br>
+          <b>Saturated:</b> <%= @saturated_fat_quantity %>g<br>
+          <b>Monounsaturated:</b> <%= @monounsaturated_fat_quantity %>g<br>
+          <b>Polyunsaturated:</b> <%= @polyunsaturated_fat_quantity %>g<br>
+          <b>Trans-fat</b> <%=  @trans_fat_quantity %>g
+        <% end %>
+      </td>
+    </tr>
+    
+     <% if @cholesterol_quantity.to_i >= 1 %>
+      <tr>
+        <th colspan="2">
+          <b>Cholesterol</b>
+          <%= @cholesterol_quantity %>mg
+        </th>
+        <td>
+          <b><%= @cholesterol_total_daily %>%</b>
+        </td>
+      </tr>
+    <% end %>
+
+    <% if @sodium_quantity.to_i >= 1 %>
+      <tr>
+        <th colspan="2">
+          <b>Sodium</b>
+          <%= @sodium_quantity %>mg
+        </th>
+        <td>
+          <b></b>
+        </td>
+      </tr>
+    <% end %>
+
+    <% if @carbohydrates_quantity.to_i >= 1 %>
+      <tr>
+        <th colspan="2">
+          <b>Total Carbohydrate</b>
+          <%= @carbohydrates_quantity %>g
+        </th>
+        <td>
+          <b><%= @carbohydrates_total_daily %>%</b>
+        </td>
+      </tr>
+    <% end %>
+
+    <% if @dietary_fiber_quantity.to_i >= 1 %>
+      <tr>
+        <td class="blank-cell">
+        </td>
+        <th>
+          Dietary Fiber
+          <%= @dietary_fiber_quantity %>g
+        </th>
+        <td>
+          <b><%= @dietary_fiber_total_daily %>%</b>
+        </td>
+      </tr>
+    <% end %>
+
+    <% if @sugars_quantity.to_i >= 1 %>
+      <tr>
+        <td class="blank-cell">
+        </td>
+        <th>
+          Sugars
+          <%= @sugars_quantity %>g
+        </th>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr class="thick-end">
+      <th colspan="2">
+        <b>Protein</b>
+        <%= @protein_quantity %>g
+      </th>
+      <td>
+      </td>
+    </tr>
+      </table>
+    </section>
+
+    <div class="form-container">
+      <form action="/lookup" method="post">
+        <label for="food">Add Food Item:</label>
+        <input type="text" id="food" name="food" required>
+        <br>
+        <button type="submit">Add Food</button>
+      </form>
+
+      <form action="/clear_calories" method="post">
+        <input type="submit" class="clear" value="Clear Calories">
+      </form>
+
+      <p style="margin-top: 10px;">
+        <a href="/lookup" class="clear">Go Back</a>
+      </p>
+    </div>
+  </div>
+</body>

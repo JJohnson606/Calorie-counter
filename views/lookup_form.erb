@@ -1,0 +1,68 @@
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f5f5f5; 
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #2e7d32; 
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 2px solid #2e7d32; 
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  width: 100%;
+  background-color: #ff9800; 
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #ef6c00; 
+}
+
+.image-container {
+  text-align: center;
+}
+
+.image {
+  width: 275px; 
+  height: auto;
+}
+
+</style>
+<div class="image-container">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg" class="image">
+</div>
+
+<form action="/lookup" method="post">
+  <label for="food">Enter a food item:</label>
+  <input type="text" id="food" name="food" required>
+  <input type="submit" value="Submit">
+</form>
+
+
