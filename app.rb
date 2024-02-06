@@ -1,4 +1,4 @@
-
+require "sinatra/activerecord"
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
@@ -56,20 +56,6 @@ post '/lookup' do
   erb :nutrition_label, locals: { nutrition_data: food_nutrition_info, total_calories: FoodNutritionInfo.total_calories }
 end
 
-# post '/add_to_total' do
-#   puts "Params: #{params.inspect}"
-#   @food = params['food']
-#   new_foods = fetch_nutrition_data(@food)
-#   new_foods.dig('totalNutrients', 'ENERC_KCAL', 'quantity')
-
-#   # Update the total calories
-#   FoodNutritionInfo.add_to_total_calories(@calories_quantity)
-#   puts "Food: #{@food}, Calories to add: #{@calories_to_add}"
-  
-#   # Redirect back to the nutrition label page 
-#   redirect '/nutrition_label'
-# end
-
 post '/clear_calories' do
   FoodNutritionInfo.clear_total_calories
   erb :nutrition_label
@@ -96,7 +82,6 @@ api_id = ENV.fetch("FOOD_API_ID")
    @food = "Food Not Available"
    end
 
-  pp parsed_nutrition_data
 
   # Extract nutrition data
   @calories_quantity = parsed_nutrition_data.dig('totalNutrients', 'ENERC_KCAL', 'quantity') || 'Calories not available'

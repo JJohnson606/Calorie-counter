@@ -10,7 +10,7 @@ gem "httparty"
 gem "net-http"
 # Use Puma as the app server
 gem "puma", "~> 5.0"
-
+gem "http"
 # use active record
 gem "sinatra-activerecord"
 
