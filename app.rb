@@ -44,10 +44,10 @@ end
 
 # Process food item lookup
 post '/lookup' do
-  @food = params.fetch('food')
-
+  @food = params.fetch('food') {"default_value"}
+  
   # Perform API request to get nutrition information
-  nutrition_data = fetch_nutrition_data(@food)
+  nutrition_data = fetch_nutrition_data(@food) 
 
   # Create an instance of FoodNutritionInfo
   food_nutrition_info = FoodNutritionInfo.new(nutrition_data)
@@ -56,23 +56,24 @@ post '/lookup' do
   erb :nutrition_label, locals: { nutrition_data: food_nutrition_info, total_calories: FoodNutritionInfo.total_calories }
 end
 
-post '/add_to_total' do
-  puts "Params: #{params.inspect}"
-  @food = params['food']
-  new_foods = fetch_nutrition_data(@food)
-  new_foods.dig('totalNutrients', 'ENERC_KCAL', 'quantity')
+# post '/add_to_total' do
+#   puts "Params: #{params.inspect}"
+#   @food = params['food']
+#   new_foods = fetch_nutrition_data(@food)
+#   new_foods.dig('totalNutrients', 'ENERC_KCAL', 'quantity')
 
-  # Update the total calories
-  FoodNutritionInfo.add_to_total_calories(@calories_quantity)
-  puts "Food: #{@food}, Calories to add: #{@calories_to_add}"
+#   # Update the total calories
+#   FoodNutritionInfo.add_to_total_calories(@calories_quantity)
+#   puts "Food: #{@food}, Calories to add: #{@calories_to_add}"
   
-  # Redirect back to the nutrition label page 
-  redirect '/nutrition_label'
-end
+#   # Redirect back to the nutrition label page 
+#   redirect '/nutrition_label'
+# end
 
 post '/clear_calories' do
   FoodNutritionInfo.clear_total_calories
-  redirect to('/lookup')
+  erb :nutrition_label
+
 end
 
 api_key = ENV.fetch("FOOD_API_KEY")
@@ -82,13 +83,20 @@ def fetch_nutrition_data(food_item)
   
 api_key = ENV.fetch("FOOD_API_KEY")
 api_id = ENV.fetch("FOOD_API_ID")
-  @food = params.fetch('food')
+  @food = params.fetch('food') 
   puts food_item
   nutrition_url = "https://api.edamam.com/api/nutrition-data?app_id=#{api_id}&app_key=#{api_key}&nutrition-type=logging&ingr=#{@food}"
-
+  
 
   raw_nutrition_data = HTTP.get(nutrition_url).to_s
   parsed_nutrition_data = JSON.parse(raw_nutrition_data)
+   if parsed_nutrition_data.dig('totalNutrientsKCal', 'ENERC_KCAL', 'quantity').to_i != 0 
+    @food
+   else
+   @food = "Food Not Available"
+   end
+
+  pp parsed_nutrition_data
 
   # Extract nutrition data
   @calories_quantity = parsed_nutrition_data.dig('totalNutrients', 'ENERC_KCAL', 'quantity') || 'Calories not available'

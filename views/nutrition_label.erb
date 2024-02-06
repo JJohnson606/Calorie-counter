@@ -130,6 +130,9 @@
 </head>
 <body>
   <div class="container">
+   
+   
+   <% if @food != nil %> 
     <div class="nutrition-info">
       <h3>Total Calories</h3>
       <p class="<%= FoodNutritionInfo.total_calories.round <= 2000 ? 'green-text' : 'red-text' %>">
@@ -141,7 +144,7 @@
       <header class="performance-facts__header">
         <h1 class="performance-facts__title">Nutrition Facts</h1>
         <p>Serving Size 1</p>
-        <p><%= @food.capitalize %></p>
+      <p> <%= @food.capitalize %></p>
       </header>
       <table class="performance-facts__table">
         <thead>
@@ -259,8 +262,10 @@
     </tr>
       </table>
     </section>
-
+     
+<% end %>
     <div class="form-container">
+     
       <form action="/lookup" method="post">
         <label for="food">Add Food Item:</label>
         <input type="text" id="food" name="food" required>
@@ -270,6 +275,7 @@
 
       <form action="/clear_calories" method="post">
         <input type="submit" class="clear" value="Clear Calories">
+      
       </form>
 
       <p style="margin-top: 10px;">
